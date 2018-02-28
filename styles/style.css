@@ -1,0 +1,14 @@
+html body {
+    background-color: rgb(203, 220, 224);
+}
+
+tbody {
+    background-color: rgb(177, 193, 207);
+}
+table.dataTable thead th {
+    background-color: rgb(173, 173, 173);
+}
+select {
+    background: #fff ;
+    border-color: rgb(173, 173, 173);
+}
