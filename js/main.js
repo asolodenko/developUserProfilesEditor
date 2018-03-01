@@ -1,16 +1,41 @@
 const dataSet = [
-    [ "Arina", "Karali", "AKarali", "318", "example@gmail.com" ],
-    [ "Yana", "Marienko", "YMarienko", "316", "example@gmail.com" ],
-    [ "Maxim", "Gromov", "MGromov", "314", "example@gmail.com" ],
-    [ "Ivan", "Karaev", "IKaraev", "141", "example@gmail.com" ],
-    [ "Yan", "Marienkov", "YanMar", "245", "example@gmail.com" ],
-    [ "Mikhail", "Gromenko", "MGromenko", "544", "example@gmail.com" ],
-    [ "Alina", "Ivanova", "AIvanova", "222", "example@gmail.com" ],
-    [ "Yana", "Marko", "YanaMarko", "222", "example@gmail.com" ],
-    [ "Maxim", "Chemeris", "MChemeris", "114", "example@gmail.com" ],
-    [ "Maria", "Omova", "MOmova", "329", "example@gmail.com" ],
-    [ "Karina", "Hatsko", "KHatsko", "414", "example@gmail.com" ],
-    [ "Maxim", "Karlash", "MKarlash", "341", "example@gmail.com" ],
+    {
+        firstName: "Arina",
+        lastName: "Karali",
+        userName: "AKarali",
+        password: "311",
+        email: "example@gmail.com"
+    }, {
+        firstName: "Yana",
+        lastName: "Marienko",
+        userName: "YMarienko",
+        password: "312",
+        email: "example@gmail.com"
+    }, {
+        firstName: "Max",
+        lastName: "Gromov",
+        userName: "MGromov",
+        password: "313",
+        email: "example@gmail.com"
+    }, {
+        firstName: "Ivan",
+        lastName: "Karaev",
+        userName: "IKaraev",
+        password: "314",
+        email: "example@gmail.com"
+    }, {
+        firstName: "Yan",
+        lastName: "Markov",
+        userName: "YanMar",
+        password: "315",
+        email: "example@gmail.com"
+    }, {
+        firstName: "Anna",
+        lastName: "Ivanova",
+        userName: "AIvanova",
+        password: "316",
+        email: "example@gmail.com"
+    }
 ];
 
 $(document).ready(function(){
@@ -18,35 +43,35 @@ $(document).ready(function(){
     $('#firstTable').dataTable({
         data: dataSet,
         columns: [
-            { title: "First name" },
-            { title: "Last name" },
-            { title: "Username" },
-            { title: "Password" },
-            { title: "E-mail" }
+            { title: "Full name",
+              data: null,
+              render: function( data, type, row ) {
+                  return "<a id='linkToProfile' href='#' onclick='createLink();'>"+data.firstName+" "+data.lastName+"</a>";
+                }
+            },
+            { title: "User name",
+              data: "userName" 
+            },
+            { title: "Password",
+              data: "password"
+            },
+            { title: "E-mail",
+              data: "email"
+            }
         ]
     });
-    $("tbody > tr").hover(
+});
+function createLink(data) {
+    $('#userProfile').toggle(
         function() {
-            $(this).append($("<span id='edit'>*</span>"));
-            $("#edit").click(
-                function() {
-                    $('#userProfile').toggle(
-                        function() {
-                            $("#firstName").val("asdasdasd");
-                            $("#lastName").val("asdasdasd");
-                            $("#email").val("asdasdasd");
-                            $("#userName").val("asdasdasd");
-                            $("#password").val("asdasdasd");
-                        }
-                    );
-                }
-            );
-        }, function() {
-            $(this).find("span:last").remove();
+            $("#firstName").val(data.firstName);
+            $("#lastName").val(data.lastName);
+            $("#email").val(data.email);
+            $("#userName").val(data.userName);
+            $("#password").val(data.password);
         }
     );
-});
-
+}
 (function() {
     'use strict';
 
