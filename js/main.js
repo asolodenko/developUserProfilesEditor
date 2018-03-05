@@ -35,6 +35,42 @@ const dataSet = [
         userName: "AIvanova",
         password: "316",
         email: "example@gmail.com"
+    }, {
+        firstName: "Marina",
+        lastName: "Petrova",
+        userName: "MPetrova",
+        password: "317",
+        email: "example@gmail.com"
+    }, {
+        firstName: "Katya",
+        lastName: "Hordienko",
+        userName: "KHordienko",
+        password: "318",
+        email: "example@gmail.com"
+    }, {
+        firstName: "Maxim",
+        lastName: "Karlash",
+        userName: "MKarlash",
+        password: "319",
+        email: "example@gmail.com"
+    }, {
+        firstName: "Mykola",
+        lastName: "Kovtun",
+        userName: "MKovtun",
+        password: "320",
+        email: "example@gmail.com"
+    }, {
+        firstName: "Yaroslav",
+        lastName: "Isaev",
+        userName: "YIsaev",
+        password: "321",
+        email: "example@gmail.com"
+    }, {
+        firstName: "Alina",
+        lastName: "Horbenko",
+        userName: "AHorbenko",
+        password: "322",
+        email: "example@gmail.com"
     }
 ];
 
@@ -46,7 +82,7 @@ $(document).ready(function(){
             { title: "Full name",
               data: null,
               render: function( data, type, row ) {
-                  return "<a id='linkToProfile' href='#' onclick='createLink();'>"+data.firstName+" "+data.lastName+"</a>";
+                  return `<a id='_id_${data.userName}' href='#userProfile'>${data.firstName} ${data.lastName}</a>`;
                 }
             },
             { title: "User name",
@@ -59,19 +95,44 @@ $(document).ready(function(){
               data: "email"
             }
         ]
-    });
-});
-function createLink(data) {
-    $('#userProfile').toggle(
-        function() {
-            $("#firstName").val(data.firstName);
-            $("#lastName").val(data.lastName);
-            $("#email").val(data.email);
-            $("#userName").val(data.userName);
-            $("#password").val(data.password);
+    }); 
+    $('#firstTable').on('click', '[id^=_id_]',
+        function() { 
+            let gotID = this.id.substr(4);
+            if ($('#userProfile').is(':hidden')) {
+                $('#userProfile').show(
+                    function() {
+                        for (let user of dataSet) {
+                            if (user.userName === gotID) {
+                                $("#firstName").val(user.firstName);
+                                $("#lastName").val(user.lastName);
+                                $("#email").val(user.email);
+                                $("#userName").val(user.userName);
+                                $("#password").val(user.password);
+                                break;
+                            }
+                        }
+                    }
+                );
+            } else if (gotID === $("#userName").val()) {
+                $('#userProfile').hide();
+            } else {
+                for (let user of dataSet) {
+                    if (user.userName === gotID) {
+                        $("#firstName").val(user.firstName);
+                        $("#lastName").val(user.lastName);
+                        $("#email").val(user.email);
+                        $("#userName").val(user.userName);
+                        $("#password").val(user.password);
+                        break;
+                    }
+                }
+            }
+            return false; 
         }
     );
-}
+});
+
 (function() {
     'use strict';
 
