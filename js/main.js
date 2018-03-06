@@ -73,6 +73,29 @@ const dataSet = [
         email: "example@gmail.com"
     }
 ];
+function getUserByID(gotID) {
+    for (let user of dataSet) {
+        if (user.userName === gotID) {
+            return user;
+        }
+    }
+};
+
+function fillUserProfile(user) {
+    $("#firstName").val(user.firstName);
+    $("#lastName").val(user.lastName);
+    $("#email").val(user.email);
+    $("#userName").val(user.userName);
+    $("#password").val(user.password);
+};
+
+function operateUserProfile(gotID) {
+    let user = getUserByID(gotID);
+    if (!user) {
+        throw new Error('User not found exception');
+    }
+    fillUserProfile(user);
+}
 
 $(document).ready(function(){
     $('#userProfile').hide();
@@ -99,56 +122,43 @@ $(document).ready(function(){
     $('#firstTable').on('click', '[id^=_id_]',
         function() { 
             let gotID = this.id.substr(4);
-            if ($('#userProfile').is(':hidden')) {
-                $('#userProfile').show(
-                    function() {
-                        for (let user of dataSet) {
-                            if (user.userName === gotID) {
-                                $("#firstName").val(user.firstName);
-                                $("#lastName").val(user.lastName);
-                                $("#email").val(user.email);
-                                $("#userName").val(user.userName);
-                                $("#password").val(user.password);
-                                break;
-                            }
-                        }
-                    }
-                );
+            let userProfile = $('#userProfile');
+            if (userProfile.is(':hidden')) {
+                userProfile.show(operateUserProfile(gotID));
             } else if (gotID === $("#userName").val()) {
-                $('#userProfile').hide();
+                userProfile.hide();
             } else {
-                for (let user of dataSet) {
-                    if (user.userName === gotID) {
-                        $("#firstName").val(user.firstName);
-                        $("#lastName").val(user.lastName);
-                        $("#email").val(user.email);
-                        $("#userName").val(user.userName);
-                        $("#password").val(user.password);
-                        break;
-                    }
-                }
+                operateUserProfile(gotID);
             }
             return false; 
         }
     );
 });
 
-(function() {
-    'use strict';
-
-    window.addEventListener('load', function() {
-      // Fetch all the forms we want to apply custom Bootstrap validation styles to
-      var forms = document.getElementsByClassName('needs-validation');
-
-      // Loop over them and prevent submission
-      var validation = Array.prototype.filter.call(forms, function(form) {
-        form.addEventListener('submit', function(event) {
-          if (form.checkValidity() === false) {
+const isValidForm = function(form) { 
+    return function(event) {
+        if (!form.checkValidity()) {
             event.preventDefault();
             event.stopPropagation();
-          }
-          form.classList.add('was-validated');
-        }, false);
-      });
-    }, false);
-  })();
+        }
+        form.classList.add('was-validated');
+    }
+}
+
+const addOnSubmit = function(form) {
+    form.addEventListener('submit', isValidForm(form), false);
+}
+
+function onLoad() {
+    const forms = document.getElementsByClassName('needs-validation');
+
+    let validation = Array.prototype.filter.call(forms, addOnSubmit);
+}
+
+(function() {
+    'use strict';
+    window.addEventListener('load', onLoad(), false);
+})();
+
+
+
